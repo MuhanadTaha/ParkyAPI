@@ -39,7 +39,7 @@ namespace ParkyAPI.Controllers
         }
 
 
-        [HttpGet("{nationalParkId:int}")]
+        [HttpGet("{nationalParkId:int}",Name = "GetNationalPark")] // اعطيتها الإسم لأنها بتلزم بالميثود اليوست لما ترجع كريت ات روات
         public IActionResult GetNationalPark(int nationalParkId)
         {
             var obj = npRepository.GetNationalPark(nationalParkId);
@@ -75,7 +75,7 @@ namespace ParkyAPI.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok();
+            return CreatedAtRoute("GetNationalPark", new { nationalParkId = obj.Id },obj); // هذي معناها روح على الميثود اللي هيك اسمها ومررلي الآي دي هذا عشان ترجعلي قيمة
         }
 
 
