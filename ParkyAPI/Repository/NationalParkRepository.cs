@@ -1,5 +1,6 @@
 ﻿using ParkyAPI.Data;
 using ParkyAPI.Models;
+using ParkyAPI.Models.DTO;
 using ParkyAPI.Repository.IRepository;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,24 +25,26 @@ namespace ParkyAPI.Repository
             return db.NationalParks.Any(m => m.Name.ToLower().Equals(Name.ToLower()));
         }
 
-        public bool CreateNationalPark(NationalParkDTO nationalPark)
+        public bool CreateNationalPark(NationalPark nationalPark)
         {
             db.NationalParks.Add(nationalPark);
             return Save();
         }
 
-        public bool DeleteNationalPark(NationalParkDTO nationalPark)
+        
+
+        public bool DeleteNationalPark(NationalPark nationalPark)
         {
             db.NationalParks.Remove(nationalPark);
             return Save();
         }
 
-        public NationalParkDTO GetNationalPark(int Id)
+        public NationalPark GetNationalPark(int Id)
         {
             return db.NationalParks.Find(Id);
         }
 
-        public IEnumerable<NationalParkDTO> GetNationalParks()
+        public IEnumerable<NationalPark> GetNationalParks()
         {
             return db.NationalParks.ToList();
 
@@ -52,7 +55,7 @@ namespace ParkyAPI.Repository
             return db.SaveChanges() >= 0 ? true : false;
         }
 
-        public bool UpdateNationalPark(NationalParkDTO nationalPark)
+        public bool UpdateNationalPark(NationalPark nationalPark)
         {
             db.NationalParks.Update(nationalPark);
             return Save();

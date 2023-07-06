@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore; // عشان أعمل انهيرت من دي بي كونتيكست
 using ParkyAPI.Models;
+using ParkyAPI.Models.DTO;
 
 namespace ParkyAPI.Data
 {
@@ -11,6 +12,6 @@ namespace ParkyAPI.Data
             
         }
 
-        public DbSet<NationalParkDTO> NationalParks { get; set; }
+        public DbSet<NationalPark> NationalParks { get; set; }
     }
 }
