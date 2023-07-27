@@ -10,6 +10,7 @@ namespace ParkyAPI.Repository.IRepository
         IEnumerable<NationalPark> GetNationalParks();
 
         NationalPark GetNationalPark(int Id);
+        NationalPark GetNationalPark(string Name);
 
         bool CheckNationalParkExists(int Id); 
         bool CheckNationalParkExists(string Name);

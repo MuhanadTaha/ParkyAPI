@@ -5,6 +5,7 @@ using ParkyAPI.Models;
 using ParkyAPI.Models.DTO;
 using ParkyAPI.Repository.IRepository;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ParkyAPI.Controllers
 {
@@ -68,7 +69,7 @@ namespace ParkyAPI.Controllers
                 return StatusCode(404,ModelState);
             }
 
-            var obj = mapper.Map<NationalPark>(nationalParkDTO);
+            var obj = mapper.Map<NationalPark>(nationalParkDTO); // بحول هان من ناشيونال بارك دي تي اوه الى ناشيونال بارك باستخدام الماب
             if (!npRepository.CreateNationalPark(obj))
             {
                 ModelState.AddModelError(string.Empty, $"Something Went Wrong Error when Adding Record {obj.Name}");
@@ -77,6 +78,75 @@ namespace ParkyAPI.Controllers
 
             return CreatedAtRoute("GetNationalPark", new { nationalParkId = obj.Id },obj); // هذي معناها روح على الميثود اللي هيك اسمها ومررلي الآي دي هذا عشان ترجعلي قيمة
         }
+
+
+        [HttpPatch ("nationalParkId:int")]
+        public IActionResult UpdateNationalPark(int nationalParkId, [FromBody] NationalParkDTO nationalParkDTO)
+        {
+            if (nationalParkDTO == null || nationalParkId != nationalParkDTO.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var objN = npRepository.GetNationalPark(nationalParkDTO.Name); // بفحص إذا الإسم موجود بقاعدة البيانات أو لا
+            if (objN != null)
+            {
+                if (objN.Id != nationalParkDTO.Id) // إذا تكرر الإسم لما جيت أعدل رح تظهر مسج إنه موجود من قبل
+                {
+                    ModelState.AddModelError(string.Empty, "National Park Exists");
+                    return StatusCode(404, ModelState);
+                }
+            }
+
+
+            var obj = mapper.Map<NationalPark>(nationalParkDTO); // بحول هان من ناشيونال بارك دي تي اوه الى ناشيونال بارك باستخدام الماب
+
+            var objFromDB = npRepository.GetNationalPark(obj.Id); // عشان أعمل مابينج بين اللي جبته من الداتا بيس وبين القيم اللي أجتني من البادي
+            objFromDB.Name = obj.Name;
+            objFromDB.State = obj.State;
+            objFromDB.Established = obj.Established;
+            objFromDB.Created = obj.Created;
+
+
+            if (!npRepository.UpdateNationalPark(objFromDB))
+            {
+                ModelState.AddModelError(string.Empty, $"Something Went Wrong Error when Updating Record {obj.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+
+            return NoContent(); //ما بدي أرجع أي كونتينت لما أعمل أب ديت
+
+        }
+
+
+
+        [HttpDelete("nationalParkId:int")]
+        public IActionResult DeleteNationalPark(int nationalParkId)
+        {
+            if(!npRepository.CheckNationalParkExists(nationalParkId))
+            {
+                return NotFound();
+            }
+
+
+            var obj = npRepository.GetNationalPark(nationalParkId);
+
+
+            if (!npRepository.DeleteNationalPark(obj))
+            {
+                ModelState.AddModelError(string.Empty, $"Something Went Wrong Error when Deleting Record {obj.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+
+            return NoContent(); //ما بدي أرجع أي كونتينت لما أعمل أب ديت
+
+        }
+
+
+
+
 
 
     }

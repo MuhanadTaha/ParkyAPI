@@ -44,6 +44,11 @@ namespace ParkyAPI.Repository
             return db.NationalParks.Find(Id);
         }
 
+        public NationalPark GetNationalPark(string Name)
+        {
+            return db.NationalParks.FirstOrDefault(m=>m.Name.ToLower().Equals(Name.ToLower()));
+        }
+
         public IEnumerable<NationalPark> GetNationalParks()
         {
             return db.NationalParks.ToList();
