@@ -130,3 +130,4 @@ C:\Users\muhanad.taha\Desktop\ParkyAPI\ParkyAPI\obj\Debug\net5.0\ParkyAPI.RazorT
 C:\Users\muhanad.taha\Desktop\ParkyAPI\ParkyAPI\obj\Debug\net5.0\ParkyAPI.csproj.CopyComplete
 C:\Users\muhanad.taha\Desktop\ParkyAPI\ParkyAPI\obj\Debug\net5.0\ParkyAPI.genruntimeconfig.cache
 C:\Users\muhanad.taha\Desktop\ParkyAPI\ParkyAPI\obj\Debug\net5.0\ref\ParkyAPI.dll
+C:\Users\muhanad.taha\Desktop\ParkyAPI\ParkyAPI\bin\Debug\net5.0\ParkyAPI.xml

@@ -14,7 +14,9 @@ using ParkyAPI.Repository;
 using ParkyAPI.Repository.IRepository;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ParkyAPI
@@ -36,14 +38,40 @@ namespace ParkyAPI
             services.AddDbContext<ApplicationDbContext>(options => // Õﬁ‰  «·√»·ÌﬂÌ‘‰ œÌ »Ì ﬂÊ‰ Ìﬂ” 
             options.UseSqlServer(Configuration.GetConnectionString("constr"))  // Ê«” Œœ„  «·ﬂÊ‰Ì‘ﬂ‘Ì‰ ” —Ì‰Ã
             );
+            services.AddAutoMapper(typeof(ParkyMappings)); // Â–Ì «·”Ì—›” «·„”ƒÊ·… ⁄‰ «·„«»ÌÌ‰Ã »Ì‰ «·ﬂ·«”Ì” »⁄„·Â« —ÌÕÌ” «— 
+            services.AddScoped<INationalParkRepository, NationalParkRepository>(); // ⁄„·  —ÌÃÌ” —Ì‘‰ ·Â–« «·«‰ —›Ì” ·√‰« »‰⁄ »—Â ”Ì—›Ì”
+
+
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ParkyAPI", Version = "v1" });
+                //c.SwaggerDoc("v1", new OpenApiInfo { Title = "ParkyAPI", Version = "v1" });
+                c.SwaggerDoc("ParkiOpenAPISpec", new OpenApiInfo // Â«‰ ﬂ· «·»Ì«‰«  Ê«·œÊﬂÌÊ„Ì ‰” «··Ì —Õ  ŸÂ— √⁄·Ï ’›Õ… «·”Ê«Ã«—
+                {
+                    Title = "ParkyAPI",
+                    Version = "1",
+                    Contact = new OpenApiContact()
+                    {
+                        Email="muhannad.oqba@gmail.com",
+                        Name ="Muhannad Taha",
+                        Url = new Uri("https://www.facebook.com/muhannadtaha.official")
+                    },
+                    Description = "Parki API Documentaion",
+                    License = new OpenApiLicense()
+                    {
+                        Url = new Uri("https://www.facebook.com/muhannadtaha.official"),
+                        Name = "Esolution Teams License"
+
+                    }
+                });;
+
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"; // Â«‰ »«” Œœ„Â‰ ⁄‘«‰ Ìﬁ—√ „·«ÕŸ«  «·≈Ìﬂ” √„ √· «·„ÊÃÊœ… »ﬂ· ¬ﬂ‘‰
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile); //Â–« »„À· «·»«À «·ﬂ«„· ·Õ Ï Ì’· ·›«Ì· «·≈Ìﬂ” √„ √· œ«Œ· «·”Ì—›Ì— AppContext.BaseDirectory
+                c.IncludeXmlComments(xmlCommentsFullPath);
             });
 
-            services.AddAutoMapper(typeof(ParkyMappings)); // Â–Ì «·”Ì—›” «·„”ƒÊ·… ⁄‰ «·„«»ÌÌ‰Ã »Ì‰ «·ﬂ·«”Ì” »⁄„·Â« —ÌÕÌ” «— 
 
-            services.AddScoped<INationalParkRepository, NationalParkRepository>(); // ⁄„·  —ÌÃÌ” —Ì‘‰ ·Â–« «·«‰ —›Ì” ·√‰« »‰⁄ »—Â ”Ì—›Ì”
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +81,7 @@ namespace ParkyAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkyAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/ParkiOpenAPISpec/swagger.json", "ParkyAPI 1"));
             }
 
             app.UseHttpsRedirection();
